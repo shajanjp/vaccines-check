@@ -27,15 +27,22 @@ function updateCentreList(pincode = '686665', date = currentDate()){
 function displayVaccineCentres(centres = []){
     let centreList = [];
 
-    for(let centre of centres){
-        centreList.push(`
-        <tr>
-        <td>${centre.name}</td>
-        <td>${centre.district_name}</td>
-        <td>1,91</td>
-        <td>${centre.fee_type}</td>
-      </tr>
-        `);
+    for(let centre of centres) {
+        centreList.push(
+            centre.sessions.map(session => {
+            return `<tr>
+                <td>${session.date}</td>
+                <td>${centre.name}</td>
+                <td>${centre.district_name}</td>
+                <td>${session.vaccine}</td>
+                <td>${session.available_capacity}</td>
+                <td>${session.available_capacity_dose1}</td> 
+                <td>${session.available_capacity_dose2}</td> 
+                <td>${session.min_age_limit}</td>
+                <td>${centre.fee_type}</td>
+            </tr>`;
+            })
+        );
     }
 
     return centreList.join('');

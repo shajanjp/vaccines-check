@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vaccines</title>
+
+    <title>Vaccines Check</title>
     <!-- Google Fonts -->
     <link
       rel="stylesheet"
@@ -27,8 +28,8 @@
   </head>
   <body>
     <div class="container">
-        <h1 class="main">Vaccine Availability Check</h1>
-        <div class="row">
+      <h1 class="main">Vaccines Availability Check</h1>
+      <div class="row">
         <div class="column column-25">
           <label for="pinNumber">PIN Number</label>
           <input type="text" placeholder="686665" id="pinNumber" />
@@ -40,17 +41,21 @@
           <table>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>District</th>
-                <th>Vaccine</th>
-                <th>Price</th>
+                <td>Date</td>
+                <td>Name</td>
+                <td>District</td>
+                <td>Vaccine</td>
+                <td>Available</td>
+                <td>Dose 1</td>
+                <td>Dose 2</td>
+                <td>Min Age</td>
+                <td>Price</td>
               </tr>
             </thead>
             <tbody id="centres-rows"></tbody>
           </table>
         </div>
       </div>
-    
     </div>
     <script src="./script.js"></script>
   </body>
