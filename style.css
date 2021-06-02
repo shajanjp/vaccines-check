@@ -1,11 +1,17 @@
-.container{
-    padding-top:20px;
+.container {
+  padding-top: 10px;
 }
 
-h1.main{
-    text-align: center;
+h1.main {
+  text-align: center;
 }
 
 thead tr td {
-    font-weight: bold;
+  font-weight: bold;
+}
+
+.centre-details {
+  padding: 20px;
+  border: 1px solid red;
+  border-radius: 0.8em;
 }
