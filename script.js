@@ -57,5 +57,6 @@ function isValidPin(pin){
 pinNumberInput.addEventListener('input', updateListIfNeeded)
 
 if(isValidPin(storage.getItem("pinNumber"))){
-    updateCentreList(storage.getItem("pinNumber"))
+    pinNumberInput.value = storage.getItem("pinNumber");
+    updateCentreList(pinNumberInput.value);
 }
