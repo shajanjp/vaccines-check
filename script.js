@@ -1,19 +1,61 @@
-function getVacineCentresByDistrictIdAndDate(district_id = '307', date = currentDate()){
-    return fetch(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=${district_id}&date=${date}`)
+const API_BASE_URL = "https://cdn-api.co-vin.in/api/v2";
+const centresContainer = document.getElementById('centres-rows');
+const pinNumberInput = document.getElementById('pinNumber');
+const storage = window.localStorage;
+
+function getVacineCentresByDistrictIdAndDate(pinNumber, date){ 
+    return fetch(`${API_BASE_URL}/appointment/sessions/public/calendarByPin?pincode=${pinNumber}&date=${date}`)
     .then((res) => {
-        return res.json()
+        return res.json();
     })
 }
 
 function currentDate(){
-    const currentDate = new Date();
+    const dateNow = new Date();
 
-    return `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+    return `${String(dateNow.getDate()).padStart(2, "0")}-${String(dateNow.getMonth() + 1).padStart(2, "0")}-${dateNow.getFullYear()}`;
 }
 
-getVacineCentresByDistrictIdAndDate(1800)
-.then(vaccineCentres => {
-    // I have docble checked, its 'centres' and not 'centers' ;)
-    const centresByPincode = vaccineCentres.centers.filter(centre => centre.pincode === '686665');
-    console.log("centresByPincode", centresByPincode);
-})
+function updateCentreList(pincode = '686665', date = currentDate()){
+    getVacineCentresByDistrictIdAndDate(pincode, date)
+    .then(vaccineCentres => {
+        // I have double checked, its 'centres' and not 'centers' ;)
+        centresContainer.innerHTML = displayVaccineCentres(vaccineCentres.centers);
+    })
+}
+
+function displayVaccineCentres(centres = []){
+    let centreList = [];
+
+    for(let centre of centres){
+        centreList.push(`
+        <tr>
+        <td>${centre.name}</td>
+        <td>${centre.district_name}</td>
+        <td>1,91</td>
+        <td>${centre.fee_type}</td>
+      </tr>
+        `);
+    }
+
+    return centreList.join('');
+}
+
+function updateListIfNeeded(pinNumber){
+    if(isValidPin(this.value)){
+        storage.setItem("pinNumber", this.value);
+        updateCentreList(this.value);
+    }
+}
+
+function isValidPin(pin){
+    const pattern = new RegExp(/^[0-9]{6}$/g);
+    
+    return pattern.test(pin) 
+}
+
+pinNumberInput.addEventListener('input', updateListIfNeeded)
+
+if(isValidPin(storage.getItem("pinNumber"))){
+    updateCentreList(storage.getItem("pinNumber"))
+}
