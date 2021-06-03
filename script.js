@@ -1,9 +1,10 @@
 const API_BASE_URL = "https://cdn-api.co-vin.in/api/v2";
-const UPDATE_INTERVAL = 300000; 
+const UPDATE_INTERVAL = 300000;
 const centresContainer = document.getElementById("centre-container");
 const pinNumberInput = document.getElementById("pinNumber");
+const notifySwitch = document.getElementById("noitify-switch");
 const storage = window.localStorage;
-let intervalHandle; 
+let intervalHandle;
 
 function getVacineCentresByDistrictIdAndDate(pinNumber, date) {
   return fetch(
@@ -36,7 +37,9 @@ function displayVaccineCentres(centres = []) {
       ...centre.sessions.map((session) => {
         return `
         <div class="four wide column">
-        <div class="ui fluid card" style="border-top: 2px solid ${ session.available_capacity === 0 ? "#ff5722" : "#1fab89" }">
+        <div class="ui fluid card" style="border-top: 2px solid ${
+          session.available_capacity === 0 ? "#ff5722" : "#1fab89"
+        }">
           <div class="content">
           <div class="right floated meta">${session.date}</div>
             <div class="header">${centre.name}</div>
@@ -118,14 +121,31 @@ function checkCentresAndNotifyIfNeed(vaccineCentres) {
 if (isValidPin(storage.getItem("pinNumber"))) {
   pinNumberInput.value = storage.getItem("pinNumber");
   updateCentreList(pinNumberInput.value);
-
-  intervalHandle = setInterval(() => {
-    getVacineCentresByDistrictIdAndDate(
-      pinNumberInput.value,
-      currentDate()
-    ).then(checkCentresAndNotifyIfNeed);
-  }, UPDATE_INTERVAL);
+  if (storage.getItem("pinNumber") === "true") {
+    intervalHandle = setInterval(() => {
+      getVacineCentresByDistrictIdAndDate(
+        pinNumberInput.value,
+        currentDate()
+      ).then(checkCentresAndNotifyIfNeed);
+    }, UPDATE_INTERVAL);
+  }
 }
+
+notifySwitch.addEventListener("change", (event) => {
+  if (event.currentTarget.checked) {
+    storage.setItem("notitificationEnabled", "true");
+
+    intervalHandle = setInterval(() => {
+      getVacineCentresByDistrictIdAndDate(
+        pinNumberInput.value,
+        currentDate()
+      ).then(checkCentresAndNotifyIfNeed);
+    }, UPDATE_INTERVAL);
+  } else {
+    clearInterval(intervalHandle);
+    storage.setItem("notitificationEnabled", "false");
+  }
+});
 
 function notify(title, description) {
   if (!("Notification" in window)) {
