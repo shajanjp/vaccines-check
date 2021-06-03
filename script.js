@@ -31,7 +31,7 @@ function displayVaccineCentres(centres = []) {
 
   for (let centre of centres) {
     centreList.push(
-      centre.sessions.map((session) => {
+      ...centre.sessions.map((session) => {
         return `<tr style="color: ${
           session.available_capacity === 0 ? "#ff5722" : "#1fab89"
         }">
