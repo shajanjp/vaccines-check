@@ -6,55 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Vaccines Check</title>
-    <!-- Google Fonts -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
-    />
-
-    <!-- CSS Reset -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
-    />
-
-    <!-- Milligram CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css"
-    />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/container.min.css" integrity="sha512-SXxjjKOeD8WYj3u56VSyXYd+lQOG1rBN9pf1n7uamIvyq8klAjvH6wFdDD+nX9LA9/FPsgBvSIEFNvtFE3LKoA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/card.min.css" integrity="sha512-u5E5vOHVsB0blcZniDNfaRkTfqdgjxIgLX17YlG0vjQyos7Z7b1BXLuhHZbF2JOVRrfNNd8P6v7fw87JaFw/Rg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/reset.min.css" integrity="sha512-Hku6E1/1Cuu0fOfOzEVBgXmElwbpIvTkO8sxWBcx9rGR4rmhb9o6VX+1kDWsBimhphTFzDnloLQEc4Ijpr7dNA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/grid.min.css" integrity="sha512-RtktBL0Hhw9K2e2rGLZGadK8cF6Q0wKxRUkfh4pJszwnarmh3GbqHCiLm3UZFA1dRiFqtPkVrcby0hXWsqoDNA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/site.min.css" integrity="sha512-5yxpdenKx5qAR4FJvFjFgtGmpNriZ0Nak38uA3KPSuUFfy8iYi8GkjgXxxfnowH8w81BkIcfBG+4QYngf2FPRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/header.min.css" integrity="sha512-W7HgFS8NHLM8mfDtKDT7OBPvZORscUOJ6O9N0ejss8UdzlJttcZHCs9KZFjlUG6s+eIAnwApsSmrBSqo7aAwag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.min.css" integrity="sha512-8Tb+T7SKUFQWOPIQCaLDWWe1K/SY8hvHl7brOH8Nz5z1VT8fnf8B+9neoUzmFY3OzkWMMs3OjrwZALgB1oXFBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/segment.min.css" integrity="sha512-heuTVGo9s2Q6N9wruuzr4S3GCZWhVQuKpSM5hMNUFMAyxTvUDU3gme8NaVtgfET6rtnh8Eaet16nj7ihVSlI5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/table.min.css" integrity="sha512-NtvxKmBWfr6sEZ3y/qV4DTXPEXpP/VZZV5BEaCFxUukf7/cyktgYpfsxs2ERvisbDXfnLJfswd2DYEj0h+qAFA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/checkbox.min.css" integrity="sha512-binQUn0abXktVdo5lUPzJyj9ZRouAxqFlchlD22+y2IAivfojjNLPuC6HCZiHT5bx+cM7ZzJstL+jHhwOUtcyg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/input.min.css" integrity="sha512-5i24U/IyvjscOlHec06pTtT16Oq70uKtnjhrZ2oez7k/qBVOdpNHPK2+SVkuxni95v1x5VGOfXYQZxm4oZcHdQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/form.min.css" integrity="sha512-GqdyivmcmveCy9pRf2yTD/TPYXVmbPFDojvy15i3xuLLy9nkgNhDRMk6+Dt/uYDdnItFUFF7WqW7GoGv+gPX+A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="container">
-      <h1 class="main">Vaccines Availability Check</h1>
-      <div class="row">
-        <div class="column column-25">
-          <label for="pinNumber">PIN Number</label>
-          <input type="text" placeholder="686665" id="pinNumber" />
+    <div class="ui container">
+      <h2 class="ui center aligned icon header">
+        <i class="syringe icon"></i>
+        Vaccines Availability Check
+      </h2>
+      
+      <form class="ui form">
+        <div class="five fields">
+          <div class="field">
+            <label for="">Pin Number</label>
+            <input type="text" placeholder="686665" id="pinNumber" />
+          </div>
+        </div>        
+        <div class="field">
+          
+          <div class="ui slider checkbox">
+            <input type="checkbox" name="newsletter">
+            <label>Notify when dose available</label>
+          </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="column">
-          <table>
-            <thead>
-              <tr>
-                <td>Date</td>
-                <td>Name</td>
-                <td>District</td>
-                <td>Vaccine</td>
-                <td>Available</td>
-                <td>Dose 1</td>
-                <td>Dose 2</td>
-                <td>Min Age</td>
-                <td>Price</td>
-              </tr>
-            </thead>
-            <tbody id="centres-rows"></tbody>
-          </table>
-        </div>
+      </form>
+      <br>
+      
+      <div class="ui stackable grid" id="centre-container">
       </div>
 
     </div>

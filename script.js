@@ -1,7 +1,9 @@
 const API_BASE_URL = "https://cdn-api.co-vin.in/api/v2";
-const centresContainer = document.getElementById("centres-rows");
+const UPDATE_INTERVAL = 300000; 
+const centresContainer = document.getElementById("centre-container");
 const pinNumberInput = document.getElementById("pinNumber");
 const storage = window.localStorage;
+let intervalHandle; 
 
 function getVacineCentresByDistrictIdAndDate(pinNumber, date) {
   return fetch(
@@ -32,19 +34,43 @@ function displayVaccineCentres(centres = []) {
   for (let centre of centres) {
     centreList.push(
       ...centre.sessions.map((session) => {
-        return `<tr style="color: ${
-          session.available_capacity === 0 ? "#ff5722" : "#1fab89"
-        }">
-            <td>${session.date}</td>
-            <td>${centre.name}</td>
-            <td>${centre.district_name}</td>
-            <td>${session.vaccine}</td>
-            <td>${session.available_capacity}</td>
-            <td>${session.available_capacity_dose1}</td> 
-            <td>${session.available_capacity_dose2}</td> 
-            <td>${session.min_age_limit}</td>
-            <td>${centre.fee_type}</td>
-        </tr>`;
+        return `
+        <div class="four wide column">
+        <div class="ui fluid card" style="border-top: 2px solid ${ session.available_capacity === 0 ? "#ff5722" : "#1fab89" }">
+          <div class="content">
+          <div class="right floated meta">${session.date}</div>
+            <div class="header">${centre.name}</div>
+            <div class="meta">${centre.district_name}</div>
+            <div class="description">
+              <table class="ui celled unstackable table">
+              <thead>
+              <tr><th>Total</th>
+              <th>Dose 1</th>
+              <th>Dose 2</th>
+              </tr></thead>  
+              <tbody>
+                  <tr>
+                    <td>${session.available_capacity}</td>
+                    <td>${session.available_capacity_dose1}</td>
+                    <td>${session.available_capacity_dose2}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="extra content">
+          <span class="right floated">
+          ${session.vaccine}
+          <i class="syringe icon"></i>
+          </span>
+          <span>
+            <i class="rupee sign icon"></i>
+            ${centre.fee_type}
+          </span>
+        </div>
+        </div>
+        </div>
+        `;
       })
     );
   }
@@ -93,12 +119,12 @@ if (isValidPin(storage.getItem("pinNumber"))) {
   pinNumberInput.value = storage.getItem("pinNumber");
   updateCentreList(pinNumberInput.value);
 
-  setInterval(() => {
+  intervalHandle = setInterval(() => {
     getVacineCentresByDistrictIdAndDate(
       pinNumberInput.value,
       currentDate()
     ).then(checkCentresAndNotifyIfNeed);
-  }, 300000);
+  }, UPDATE_INTERVAL);
 }
 
 function notify(title, description) {
