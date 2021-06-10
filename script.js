@@ -1,5 +1,5 @@
 const API_BASE_URL = "https://cdn-api.co-vin.in/api/v2";
-const UPDATE_INTERVAL = 300000;
+const UPDATE_INTERVAL = 30000;
 const centresContainer = document.getElementById("centre-container");
 const pinNumberInput = document.getElementById("pinNumber");
 const notifySwitch = document.getElementById("noitify-switch");
