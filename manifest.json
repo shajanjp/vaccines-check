@@ -4,17 +4,17 @@
   "description": "Vaccine Availibilty Check Description",
   "icons": [
     {
-      "src": "/images/icons-192.png",
+      "src": "/assets/images/vaccine-check-logo-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/images/icons-512.png",
+      "src": "/assets/images/vaccine-check-logo-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "start_url": "/?source=pwa",
+  "start_url": "/index.html",
   "background_color": "#555",
   "display": "standalone",
   "scope": "/",
@@ -25,14 +25,14 @@
       "name": "How's weather today?",
       "short_name": "Today",
       "description": "View weather information for today",
-      "url": "/today?source=pwa",
+      "url": "/index.html",
       "icons": [{ "src": "/images/today.png", "sizes": "192x192" }]
     },
     {
       "name": "How's weather tomorrow?",
       "short_name": "Tomorrow",
       "description": "View weather information for tomorrow",
-      "url": "/tomorrow?source=pwa",
+      "url": "/index.html",
       "icons": [{ "src": "/images/tomorrow.png", "sizes": "192x192" }]
     }
   ],

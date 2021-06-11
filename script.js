@@ -193,3 +193,9 @@ buttonInstall.addEventListener('click', async () => {
   // We've used the prompt, and can't use it again, throw it away
   deferredPrompt = null;
 });
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js").then(function () {
+    console.log("Service Worker Registered");
+  });
+}
