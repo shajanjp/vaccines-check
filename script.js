@@ -44,16 +44,18 @@ function displayVaccineCentres(centres = []) {
             <div class="header">${centre.name}</div>
             <div class="meta">${centre.district_name}</div>
             <div class="description">
-              <table class="ui celled unstackable table">
-              <thead>
-              <tr><th>Total</th>
-              <th>Dose 1</th>
-              <th>Dose 2</th>
-              </tr></thead>  
+              <table class="ui celled unstackable very compact table">
               <tbody>
                   <tr>
+                    <td>Total</td>
                     <td>${session.available_capacity}</td>
+                  </tr>
+                  <tr>
+                    <td>Dose 1</td>
                     <td>${session.available_capacity_dose1}</td>
+                  </tr>
+                  <tr>
+                    <td>Dose 2</td>
                     <td>${session.available_capacity_dose2}</td>
                   </tr>
                 </tbody>
@@ -62,14 +64,15 @@ function displayVaccineCentres(centres = []) {
           </div>
           
           <div class="extra content">
-          <span class="right floated">${session.date}</span>
-          <span>Min Age : ${session.min_age_limit}</span>
+          <span>${centre.fee_type}</span>
+          <span class="right floated">${session.vaccine}</span>
           </div>
 
           <div class="extra content">
-          <span class="right floated">${session.vaccine}</span>
-          <span>${centre.fee_type}</span>
-        </div>
+          <span>Min Age : ${session.min_age_limit}</span>
+          <span class="right floated">${session.date}</span>
+          </div>
+
         </div>
         </div>
         `;
