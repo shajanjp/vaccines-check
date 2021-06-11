@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/checkbox.min.css" integrity="sha512-binQUn0abXktVdo5lUPzJyj9ZRouAxqFlchlD22+y2IAivfojjNLPuC6HCZiHT5bx+cM7ZzJstL+jHhwOUtcyg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/input.min.css" integrity="sha512-5i24U/IyvjscOlHec06pTtT16Oq70uKtnjhrZ2oez7k/qBVOdpNHPK2+SVkuxni95v1x5VGOfXYQZxm4oZcHdQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/form.min.css" integrity="sha512-GqdyivmcmveCy9pRf2yTD/TPYXVmbPFDojvy15i3xuLLy9nkgNhDRMk6+Dt/uYDdnItFUFF7WqW7GoGv+gPX+A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/button.min.css" integrity="sha512-OD0ScwZAE5PCg4nATXnm8pdWi0Uk0Pp2XFsFz1xbZ7xcXvapzjvcxxHPeTZKfMjvlwwl4sGOvgJghWF2GRZZDw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
@@ -28,24 +29,34 @@
         Vaccines Availability Check
       </h2>
 
-      <button id="install-button">Install</button>
-      
-      <form class="ui form">
-        <div class="five fields">
-          <div class="field">
-            <label for="">Pin Number</label>
-            <input type="text" placeholder="686665" id="pinNumber" />
+      <div class="ui stackable grid">
+        <div class="four column row">
+          <div class="left floated column">
+
+            <form class="ui form">
+              <div class="field">
+                <div class="field">
+                  <label for="">Pin Number</label>
+                  <input type="text" pattern="\d*" placeholder="686665" id="pinNumber" />
+                </div>
+              </div>        
+              <div class="field">
+                <div class="ui slider checkbox">
+                  <input type="checkbox" id="noitify-switch">
+                  <label>Notify when dose available</label>
+                </div>
+              </div>
+            </form>
           </div>
-        </div>        
-        <div class="field">
-          
-          <div class="ui slider checkbox">
-            <input type="checkbox" id="noitify-switch">
-            <label>Notify when dose available</label>
+          <div class="right floated column">
+            <button class="ui basic fluid button" id="install-button">
+              <i class="icon download"></i>
+              Install Application
+            </button>
           </div>
         </div>
-      </form>
-      <br>
+      </div>
+      
       
       <div class="ui stackable grid" id="centre-container">
       </div>
