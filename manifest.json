@@ -14,28 +14,11 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/index.html",
-  "background_color": "#555",
+  "start_url": "index.html",
+  "background_color": "#888",
   "display": "standalone",
-  "scope": "/",
-  "theme_color": "#333",
+  "theme_color": "#888",
   "orientation": "portrait",
-  "shortcuts": [
-    {
-      "name": "How's weather today?",
-      "short_name": "Today",
-      "description": "View weather information for today",
-      "url": "/index.html",
-      "icons": [{ "src": "/images/today.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "How's weather tomorrow?",
-      "short_name": "Tomorrow",
-      "description": "View weather information for tomorrow",
-      "url": "/index.html",
-      "icons": [{ "src": "/images/tomorrow.png", "sizes": "192x192" }]
-    }
-  ],
   "screenshots": [
     {
       "src": "/images/screenshot1.png",
