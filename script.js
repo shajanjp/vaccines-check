@@ -41,7 +41,6 @@ function displayVaccineCentres(centres = []) {
           session.available_capacity === 0 ? "#ff5722" : "#1fab89"
         }">
           <div class="content">
-          <div class="right floated meta">${session.date}</div>
             <div class="header">${centre.name}</div>
             <div class="meta">${centre.district_name}</div>
             <div class="description">
@@ -61,15 +60,15 @@ function displayVaccineCentres(centres = []) {
               </table>
             </div>
           </div>
+          
           <div class="extra content">
-          <span class="right floated">
-          ${session.vaccine}
-          <i class="syringe icon"></i>
-          </span>
-          <span>
-            <i class="rupee sign icon"></i>
-            ${centre.fee_type}
-          </span>
+          <span class="right floated">${session.date}</span>
+          <span>Min Age : ${session.min_age_limit}</span>
+          </div>
+
+          <div class="extra content">
+          <span class="right floated">${session.vaccine}</span>
+          <span>${centre.fee_type}</span>
         </div>
         </div>
         </div>
