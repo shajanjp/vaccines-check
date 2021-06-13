@@ -136,7 +136,6 @@ function sendMessageToServiceWorker(data) {
 
 vaccinesCheckWorder.onmessage = function ({ data }) {
   if (data.type == "VACCINE_UPDATED") {
-    console.log(data.sessions);
     centresContainer.innerHTML = displayVaccineCentres(data.sessions);
   }
 };
