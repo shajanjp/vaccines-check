@@ -161,3 +161,21 @@ function notify(title, description) {
     });
   }
 }
+
+//send message
+function sendMessageToServiceWorker(data){
+  navigator.serviceWorker.controller.postMessage(data);
+}
+
+//listen to messages
+navigator.serviceWorker.onmessage = (event) => {
+  if (event.data && event.data.type === 'MSG_ID') {
+    console.log("message recieved from service worker")
+  }
+};
+
+setTimeout(() => {
+  sendMessageToServiceWorker({
+    type: 'MSG_ID',
+  })
+},10000)
