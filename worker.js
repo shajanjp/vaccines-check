@@ -57,7 +57,7 @@ function checkPeriodicallyAndUpdateView({ pincode, date }) {
   }, UPDATE_INTERVAL);
 }
 
-function flattenCenterSessions(centers) {
+function flattenCenterSessions(centers = []) {
   const sessions = centers.reduce((acc, center) => {
     acc.push(
       ...center.sessions.map((session) => {

@@ -86,6 +86,16 @@ function validateAndUpdateList() {
         date: currentDate(),
       },
     });
+
+    if (storage.getItem("notitificationEnabled") === "true") {
+      sendMessageToServiceWorker({
+        type: "UPDATE_VACCINE_CRON",
+        data: {
+          pincode: pincodeInput.value,
+          date: currentDate(),
+        },
+      });
+    }
   }
 }
 
