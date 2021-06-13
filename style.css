@@ -17,12 +17,12 @@ thead tr td {
 }
 
 /* Hide arrows in pincode input */
-#pinNumber::-webkit-outer-spin-button,
-#pinNumber::-webkit-inner-spin-button {
+#pincode::-webkit-outer-spin-button,
+#pincode::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 /* Firefox */
-#pinNumber[type=number] {
+#pincode[type=number] {
   -moz-appearance: textfield;
 }
