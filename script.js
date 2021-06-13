@@ -1,11 +1,9 @@
-const UPDATE_INTERVAL = 30000;
 const centresContainer = document.getElementById("centre-container");
 const pincodeInput = document.getElementById("pincode");
 const notifySwitch = document.getElementById("noitify-switch");
-const vaccinesCheckWorder = new Worker('./worker.js');
+const vaccinesCheckWorder = new Worker("./worker.js");
 const storage = window.localStorage;
 let intervalHandle;
-
 
 function currentDate() {
   const dateNow = new Date();
@@ -21,20 +19,18 @@ function updateCentreList(pincode = "686665", date = currentDate()) {
   });
 }
 
-function displayVaccineCentres(centers = []) {
-  let centreList = [];
-
-  for (let centre of centers) {
-    centreList.push(
-      ...centre.sessions.map((session) => {
-        return `
+function displayVaccineCentres(sessions = []) {
+  let sessionList = [];
+  sessionList.push(
+    ...sessions.map((session) => {
+      return `
         <div class="four wide column">
         <div class="ui fluid card" style="border-top: 2px solid ${
           session.available_capacity === 0 ? "#ff5722" : "#1fab89"
         }">
           <div class="content">
-            <div class="header">${centre.name}</div>
-            <div class="meta">${centre.district_name}</div>
+            <div class="header">${session.center.name}</div>
+            <div class="meta">${session.center.district_name}</div>
             <div class="description">
               <table class="ui celled unstackable very compact table">
               <tbody>
@@ -56,7 +52,7 @@ function displayVaccineCentres(centers = []) {
           </div>
           
           <div class="extra content">
-          <span>${centre.fee_type}</span>
+          <span>${session.center.fee_type}</span>
           <span class="right floated">${session.vaccine}</span>
           </div>
 
@@ -68,11 +64,10 @@ function displayVaccineCentres(centers = []) {
         </div>
         </div>
         `;
-      })
-    );
-  }
+    })
+  );
 
-  return centreList.join("");
+  return sessionList.join("");
 }
 
 function isValidPin(pin) {
@@ -85,12 +80,12 @@ function validateAndUpdateList() {
   if (isValidPin(this.value)) {
     storage.setItem("pincode", this.value);
     sendMessageToServiceWorker({
-      type: 'UPDATE_VACCINES',
+      type: "UPDATE_VACCINES",
       data: {
         pincode: pincodeInput.value,
-        date: currentDate()
-      }
-    })
+        date: currentDate(),
+      },
+    });
   }
 }
 
@@ -99,49 +94,49 @@ pincodeInput.addEventListener("input", validateAndUpdateList);
 if (isValidPin(storage.getItem("pincode"))) {
   pincodeInput.value = storage.getItem("pincode");
   sendMessageToServiceWorker({
-    type: 'UPDATE_VACCINES', 
+    type: "UPDATE_VACCINES",
     data: {
-      pincode : pincodeInput.value,
-      date: currentDate()
-    }
-  })
+      pincode: pincodeInput.value,
+      date: currentDate(),
+    },
+  });
   if (storage.getItem("notitificationEnabled") === "true") {
     sendMessageToServiceWorker({
-      type: 'UPDATE_VACCINE_CRON',
+      type: "UPDATE_VACCINE_CRON",
       data: {
         pincode: pincodeInput.value,
-        date: currentDate()
-      }
-    })
+        date: currentDate(),
+      },
+    });
   }
 }
 
 notifySwitch.addEventListener("change", (event) => {
   if (event.currentTarget.checked) {
     storage.setItem("notitificationEnabled", "true");
-    
+
     sendMessageToServiceWorker({
-      type: 'UPDATE_VACCINE_CRON',
+      type: "UPDATE_VACCINE_CRON",
       data: {
         pincode: pincodeInput.value,
-        date: currentDate()
-      }
-    })
-
+        date: currentDate(),
+      },
+    });
   } else {
     sendMessageToServiceWorker({
-      type: 'STOP_VACCINE_CRON'
+      type: "STOP_VACCINE_CRON",
     });
     storage.setItem("notitificationEnabled", "false");
   }
 });
 
-function sendMessageToServiceWorker(data){
+function sendMessageToServiceWorker(data) {
   vaccinesCheckWorder.postMessage(data);
 }
 
-vaccinesCheckWorder.onmessage = function({ data }) {
-  if(data.type == 'VACCINE_UPDATED') {
-    centresContainer.innerHTML = displayVaccineCentres(data.centers);
+vaccinesCheckWorder.onmessage = function ({ data }) {
+  if (data.type == "VACCINE_UPDATED") {
+    console.log(data.sessions);
+    centresContainer.innerHTML = displayVaccineCentres(data.sessions);
   }
-}
+};
