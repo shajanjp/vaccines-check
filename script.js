@@ -140,3 +140,5 @@ vaccinesCheckWorder.onmessage = function ({ data }) {
     centresContainer.innerHTML = displayVaccineCentres(data.sessions);
   }
 };
+
+Notification.requestPermission().then(() => {});
