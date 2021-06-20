@@ -2,12 +2,29 @@ let intervalHandle;
 const API_BASE_URL = "https://cdn-api.co-vin.in/api/v2";
 const UPDATE_INTERVAL = 30000;
 
-function getVacineCentresByDistrictIdAndDate(pincode, date) {
+function getVacineCentersByPincodeAndDate(pincode, date) {
   return fetch(
     `${API_BASE_URL}/appointment/sessions/public/calendarByPin?pincode=${pincode}&date=${date}`
   ).then((res) => {
     return res.json();
   });
+}
+
+function getVacineCentersByDistrictIdAndDate(districtId, date) {
+  return fetch(
+    `${API_BASE_URL}/appointment/sessions/public/calendarByDistrict?district_id=${districtId}&date=${date}`
+  ).then((res) => {
+    return res.json();
+  });
+}
+
+function getVacineCenters(filters){
+  if(filters.pincode){
+    return getVacineCentersByPincodeAndDate(filters.pincode, filters.date);
+  }
+  else if(filters.districtId){
+    return getVacineCentersByDistrictIdAndDate(filters.districtId, filters.date);
+  }
 }
 
 onmessage = function ({ data }) {
@@ -29,8 +46,8 @@ onmessage = function ({ data }) {
   }
 };
 
-function checkAndUpdateView({ pincode, date }) {
-  getVacineCentresByDistrictIdAndDate(pincode, date).then((data) => {
+function checkAndUpdateView({ pincode, date, districtId }) {
+  getVacineCenters({ pincode, date, districtId }).then((data) => {
     postMessage({
       type: "VACCINE_UPDATED",
       sessions: flattenCenterSessions(data.centers),
@@ -38,21 +55,23 @@ function checkAndUpdateView({ pincode, date }) {
   });
 }
 
-function checkPeriodicallyAndUpdateView({ pincode, date }) {
-  getVacineCentresByDistrictIdAndDate(pincode, date).then((data) => {
+function checkPeriodicallyAndUpdateView({ pincode, date, districtId }) {
+  getVacineCenters({ pincode, date, districtId }).then((data) => {
     postMessage({
       type: "VACCINE_UPDATED",
       sessions: flattenCenterSessions(data.centers),
     });
   });
+
   clearInterval(intervalHandle);
+
   intervalHandle = setInterval(() => {
-    getVacineCentresByDistrictIdAndDate(pincode, date).then((data) => {
+    getVacineCenters({ pincode, date, districtId }).then((data) => {
       postMessage({
         type: "VACCINE_UPDATED",
         sessions: flattenCenterSessions(data.centers),
       });
-      checkCentresAndNotifyIfNeed(data.centers)
+      checkCentersAndNotifyIfNeed(data.centers)
     });
   }, UPDATE_INTERVAL);
 }
@@ -99,8 +118,8 @@ function notify(title = "", description = "") {
   }
 }
 
-function checkCentresAndNotifyIfNeed(centers) {
-  const availableCentreList = (centers || []).reduce(
+function checkCentersAndNotifyIfNeed(centers) {
+  const availableCenterList = (centers || []).reduce(
     (acc, obj) => {
       for (let session of obj.sessions) {
         if (session.available_capacity > 0) {
@@ -112,10 +131,10 @@ function checkCentresAndNotifyIfNeed(centers) {
     },
     []
   );
-  if (availableCentreList.length) {
+  if (availableCenterList.length) {
     notify(
       "Vaccine Available",
-      `Vaccines are available now at ${availableCentreList[0]} and other centers`
+      `Vaccines are available now at ${availableCenterList[0]} and other centers`
     );
     postMessage({
       type: 'PLAY_BEEP'

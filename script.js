@@ -1,4 +1,5 @@
-const centresContainer = document.getElementById("centre-container");
+const API_BASE_URL = "https://cdn-api.co-vin.in/api/v2";
+const centersContainer = document.getElementById("centers-container");
 const pincodeInput = document.getElementById("pincode");
 const notifySwitch = document.getElementById("noitify-switch");
 const vaccinesCheckWorder = new Worker("./worker.js");
@@ -13,13 +14,7 @@ function currentDate() {
   ).padStart(2, "0")}-${dateNow.getFullYear()}`;
 }
 
-function updateCentreList(pincode = "686665", date = currentDate()) {
-  getVacineCentresByDistrictIdAndDate(pincode, date).then((vaccineCentres) => {
-    centresContainer.innerHTML = displayVaccineCentres(vaccineCentres.centers);
-  });
-}
-
-function displayVaccineCentres(sessions = []) {
+function displayVaccineCenters(sessions = []) {
   let sessionList = [];
   sessionList.push(
     ...sessions.map((session) => {
@@ -76,26 +71,27 @@ function isValidPin(pin) {
   return pattern.test(pin);
 }
 
+function updateVaccinesAndCronIfNeeded(data){
+  sendMessageToServiceWorker({
+    type: "UPDATE_VACCINES",
+    data
+  });
+
+  if (storage.getItem("notitificationEnabled") === "true") {
+    sendMessageToServiceWorker({
+      type: "UPDATE_VACCINE_CRON",
+      data,
+    });
+  }
+}
+
 function validateAndUpdateList() {
   if (isValidPin(this.value)) {
     storage.setItem("pincode", this.value);
-    sendMessageToServiceWorker({
-      type: "UPDATE_VACCINES",
-      data: {
-        pincode: pincodeInput.value,
-        date: currentDate(),
-      },
-    });
-
-    if (storage.getItem("notitificationEnabled") === "true") {
-      sendMessageToServiceWorker({
-        type: "UPDATE_VACCINE_CRON",
-        data: {
-          pincode: pincodeInput.value,
-          date: currentDate(),
-        },
-      });
-    }
+    updateVaccinesAndCronIfNeeded({
+      pincode: pincodeInput.value,
+      date: currentDate(),
+    })
   }
 }
 
@@ -107,22 +103,11 @@ if (storage.getItem("notitificationEnabled") === "true") {
 
 if (isValidPin(storage.getItem("pincode"))) {
   pincodeInput.value = storage.getItem("pincode");
-  sendMessageToServiceWorker({
-    type: "UPDATE_VACCINES",
-    data: {
-      pincode: pincodeInput.value,
-      date: currentDate(),
-    },
-  });
-  if (storage.getItem("notitificationEnabled") === "true") {
-    sendMessageToServiceWorker({
-      type: "UPDATE_VACCINE_CRON",
-      data: {
-        pincode: pincodeInput.value,
-        date: currentDate(),
-      },
-    });
-  }
+  
+  updateVaccinesAndCronIfNeeded({
+    pincode: pincodeInput.value,
+    date: currentDate(),
+  })
 }
 
 notifySwitch.addEventListener("change", (event) => {
@@ -155,7 +140,7 @@ function sendMessageToServiceWorker(data) {
 
 vaccinesCheckWorder.onmessage = function ({ data }) {
   if (data.type == "VACCINE_UPDATED") {
-    centresContainer.innerHTML = displayVaccineCentres(data.sessions);
+    centersContainer.innerHTML = displayVaccineCenters(data.sessions);
   }
   if (data.type == "PLAY_BEEP") {
     beep()
@@ -165,3 +150,59 @@ vaccinesCheckWorder.onmessage = function ({ data }) {
 Notification.requestPermission().then(() => {});
 
 beep();
+
+function getStates(){
+  return fetch(
+    `${API_BASE_URL}/admin/location/states`
+  ).then((res) => {
+    return res.json();
+  });
+}
+
+function getDistrictsByStateId(stateId){
+  return fetch(
+    `${API_BASE_URL}/admin/location/districts/${stateId}`
+  ).then((res) => {
+    return res.json();
+  });
+}
+
+getStates()
+.then(data => {
+  $('#select-state')
+    .dropdown({
+      values: data.states.map(state => {
+        return {
+          name: state.state_name,
+          value: state.state_id
+        }
+      }),
+      onChange: fetchAndUpdateDistrict
+    })
+});
+
+function fetchAndUpdateDistrict(stateId){
+  if(stateId) {
+    getDistrictsByStateId(stateId)
+    .then(data => {
+      $('#select-district')
+      .dropdown({
+        values: data.districts.map(district => {
+          return {
+            name: district.district_name,
+            value: district.district_id
+          }
+        }),
+        onChange: (districtId) => {
+          sendMessageToServiceWorker({
+            type: "UPDATE_VACCINE_CRON",
+            data: {
+              districtId,
+              date: currentDate(),
+            },
+          });
+        }
+      })
+    })
+  }
+}
