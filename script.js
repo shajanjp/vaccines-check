@@ -19,7 +19,7 @@ function displayVaccineCenters(sessions = []) {
   sessionList.push(
     ...sessions.map((session) => {
       return `
-        <div class="four wide column">
+        <div class="wide column">
         <div class="ui fluid card" style="border-top: 2px solid ${
           session.available_capacity === 0 ? "#ff5722" : "#1fab89"
         }">
